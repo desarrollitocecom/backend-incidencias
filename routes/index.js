@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 
-const unidades=require("./informacionRouter");
+const informacion=require("./informacionRouter");
 
-router.use('/unidades',unidades);
+router.use('/informacion',informacion);
 
 module.exports = router;
