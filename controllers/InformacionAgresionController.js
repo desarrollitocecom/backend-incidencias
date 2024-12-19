@@ -10,10 +10,9 @@ const getAllEstadoProceso = async () => {
             throw new Error("Error al obtener los serenos");
         }
 
-        const unidades = data.data
-            .map(({ id, descripcion }) => ({ id, descripcion }))
+       
           
-        return unidades;
+        return data;
     } catch (error) {
         console.error("Error en getAllEstado:", error);
         throw error;
@@ -27,10 +26,8 @@ const getAllGeneroAgresor = async () => {
             throw new Error("Error al obtener los serenos");
         }
 
-        const unidades = data.data
-            .map(({ id, descripcion, habilitado }) => ({ id, descripcion, habilitado }))
-          
-        return unidades;
+       
+        return data;
     } catch (error) {
         console.error("Error en getAllUnidades:", error);
         throw error;
@@ -44,38 +41,42 @@ const getAllGeneroVictima = async () => {
             throw new Error("Error al obtener los serenos");
         }
 
-        const unidades = data.data
-            .map(({ id, descripcion, habilitado }) => ({ id, descripcion, habilitado }))
-          
+           
 
-        return unidades;
+        return data;
     } catch (error) {
         console.error("Error en getAllUnidades:", error);
         throw error;
     }
 };
-const getAllSeveridadProcesos= async (page = 1, limit = 20) => {
-    const offset = (page - 1) * limit;
+const getAllSeveridadProcesos= async () => {
     try {
         const { data, status } = await axios.get(`${INCIDENCIAS_URL}/api/severidad_procesos`);
         if (status !== 200) {
             throw new Error("Error al obtener los serenos");
         }
-
-        // Filtra solo los campos requeridos
-        console.log(data)
-        const unidadesFiltradas = data.data
-            .map(({ id, descripcion, habilitado }) => ({ id, descripcion, habilitado }))
-            .slice(offset, offset + limit); // Aplica la paginación
-
-        return unidadesFiltradas;
+        return data;
     } catch (error) {
         console.error("Error en getAllUnidades:", error);
         throw error;
     }
 };
 
+const getAllSeveridades = async () => {
+  
+    try {
+        const { data, status } = await axios.get(`${INCIDENCIAS_URL}/api/severidades`);
+        if (status !== 200) {
+            throw new Error("Error al obtener las severidades");
+        }
 
+       
+        return data;
+    } catch (error) {
+        console.error("Error en getAllseveridades:", error);
+        throw error;
+    }
+};
 
 
 
@@ -83,5 +84,6 @@ module.exports = {
     getAllEstadoProceso,
     getAllGeneroAgresor,
     getAllGeneroVictima,
-    getAllSeveridadProcesos
+    getAllSeveridadProcesos,
+    getAllSeveridades
  };
