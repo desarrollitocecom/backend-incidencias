@@ -22,7 +22,7 @@ initializeSocket(server); // Inicializamos Socket.io
 //app.use("/", router);
 
 app.get("/", async (req, res) => {
-  const 
+  
   res.json({ message: "El servidor esta funcionando!", data: "Bien perro!" });
 
 });
