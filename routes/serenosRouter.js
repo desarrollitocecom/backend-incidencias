@@ -6,7 +6,8 @@ const { getAllSerenosHandler, getSerenoByDNIHandler, getCargoSerenoHandler } = r
 const router = Router();
 
 router.get('/', getAllSerenosHandler);
-router.get('/:dni', getSerenoByDNIHandler);
 router.get('/cargos', getCargoSerenoHandler);
+router.get('/:dni', getSerenoByDNIHandler);
+
 
 module.exports = router;

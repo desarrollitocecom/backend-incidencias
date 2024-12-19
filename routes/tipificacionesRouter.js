@@ -6,8 +6,8 @@ const { getUnidadesHandler, getTipoCasoHandler, getSubTipoCasoHandler, getTipoRe
 const router = Router();
 
 router.get('/unidades', getUnidadesHandler);
-router.get('/tipo_caso', getTipoCasoHandler);
-router.get('/subtipo_caso', getSubTipoCasoHandler);
+router.get('/tipo_casos', getTipoCasoHandler);
+router.get('/subtipo_casos', getSubTipoCasoHandler);
 router.get('/tipo_reportante', getTipoReportanteHandler);
 
 module.exports = router;

@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+const { INCIDENCIAS_URL } = process.env;
+
 const getUnidades = async () => {
 
     try {
@@ -8,6 +10,7 @@ const getUnidades = async () => {
         if (status !== 200) {
             throw new Error("Error al obtener las unidades");
         }
+        console.log(data);
         return data;
     } catch (error) {
         console.error(error);

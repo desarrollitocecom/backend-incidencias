@@ -5,7 +5,12 @@ const getUnidadesHandler = async (req, res) => {
         const unidades = await getUnidades();
         res.status(200).json({
             message: 'Unidades obtenidas correctamente',
-            data: unidades
+            data: unidades.data.map((unidad) =>
+            ({
+                id: unidad.id,
+                descripcion: unidad.descripcion
+            })
+            )
         });
     } catch (error) {
         console.error('Error al obtener unidades:', error);
@@ -18,7 +23,13 @@ const getTipoCasoHandler = async (req, res) => {
         const tiposCaso = await getTipoCaso();
         res.status(200).json({
             message: 'Tipos de caso obtenidos correctamente',
-            data: tiposCaso
+            data: tiposCaso.data.map((tipoCaso) =>
+            ({
+                id: tipoCaso.id,
+                descripcion: tipoCaso.descripcion,
+                unidad_id: tipoCaso.unidad_id,
+                codigo: tipoCaso.codigo
+            }))
         });
     } catch (error) {
         console.error('Error al obtener tipos de caso:', error);
@@ -31,7 +42,12 @@ const getSubTipoCasoHandler = async (req, res) => {
         const subtiposCaso = await getSubTipoCaso();
         res.status(200).json({
             message: 'Subtipos de caso obtenidos correctamente',
-            data: subtiposCaso
+            data: subtiposCaso.data.map((subtipoCaso) =>
+                ({
+                    id: subtipoCaso.id,
+                    descripcion: subtipoCaso.descripcion,
+                    unidad_id: subtipoCaso.unidad_id,
+                }))
         });
     } catch (error) {
         console.error('Error al obtener subtipos de caso:', error);

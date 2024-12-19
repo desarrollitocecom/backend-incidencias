@@ -1,10 +1,13 @@
 const { Router } = require('express');
 const router = Router();
 
-const serenosRutas = require('./serenosRutas');
-const tipificacionRutas = require('./tipificacionRutas');
+const serenosRouter = require('./serenosRouter');
+const tipificacionRouter = require('./tipificacionesRouter');
+const informacionRouter=require("./informacionRouter");
 
-router.use('/serenos', serenosRutas);
-router.use('/tipificacion', tipificacionRutas);
+router.use('/informacion',informacionRouter);
+router.use('/serenos', serenosRouter);
+router.use('/tipificaciones', tipificacionRouter);
+
 
 module.exports = router;
