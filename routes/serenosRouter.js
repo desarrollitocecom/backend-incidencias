@@ -1,18 +1,12 @@
-const { Router } = require("express");
+// routes/serenosRutas.js
+
+const { Router } = require('express');
+const { getAllSerenosHandler, getSerenoByDNIHandler, getCargoSerenoHandler } = require('../handlers/serenosHandler');
+
 const router = Router();
 
-/*
-const funcionRutas = require("./funcionRutas");
-const sexoRutas = require('./sexoRutas');
-
-// Usa prefijos para organizar las rutas
-
-router.use('/funciones', funcionRutas);
-router.use('/sexos', sexoRutas);
-*/
-
-
-
-
+router.get('/', getAllSerenosHandler);
+router.get('/:dni', getSerenoByDNIHandler);
+router.get('/cargos', getCargoSerenoHandler);
 
 module.exports = router;
