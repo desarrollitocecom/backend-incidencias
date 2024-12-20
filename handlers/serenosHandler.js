@@ -1,4 +1,4 @@
-const { getAllSerenos, getSerenoByDNI, getCargoSereno } = require('../controllers/serenosController');
+const { getAllSerenos, getSerenoByDNI, getCargoSereno, getJurisdicciones } = require('../controllers/serenosController');
 
 const getAllSerenosHandler = async (req, res) => {
     try {
@@ -25,8 +25,8 @@ const getSerenoByDNIHandler = async (req, res) => {
 
     try {
         const sereno = await getSerenoByDNI(dni);
-        console.log("sereno: ",sereno);
-        
+        console.log("sereno: ", sereno);
+
         if (!sereno) {
             return res.status(200).json({ message: 'Sereno no encontrado', data: {} });
         }
@@ -67,8 +67,25 @@ const getCargoSerenoHandler = async (req, res) => {
     }
 };
 
+const getJurisdiccionesHandler = async (req, res) => {
+    try {
+        const jurisdicciones = await getJurisdicciones();
+        res.status(200).json({
+            message: 'Jurisdicciones obtenidas correctamente',
+            data: jurisdicciones.data.map(({ id, nombre }) => ({
+                id,
+                nombre
+            }))
+        });
+    } catch (error) {
+        console.error('Error al obtener jurisdicciones:', error);
+        res.status(500).json({ error: 'Error interno del servidor al obtener las juriscicciones' });
+    }
+};
+
 module.exports = {
     getAllSerenosHandler,
     getSerenoByDNIHandler,
-    getCargoSerenoHandler
+    getCargoSerenoHandler,
+    getJurisdiccionesHandler
 };
