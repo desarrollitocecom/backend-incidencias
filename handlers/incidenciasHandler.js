@@ -5,28 +5,36 @@ const { getIncidenciasByDNI, getIncidenciaByID, postIncidencia } = require('../c
 // Handler para obtener incidencias por DNI
 const getIncidenciasByDNIHandler = async (req, res) => {
     const { dni } = req.params;
+    let { fechaInicio, fechaFin } = req.query;
 
-    if (!dni) {
+    if (!dni) 
         return res.status(400).json({ message: 'El DNI es requerido' });
-    }
+    
+    if (fechaInicio) 
+        fechaInicio = new Date(fechaInicio).toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+    if (fechaFin) 
+        fechaFin = new Date(fechaFin).toISOString().split('T')[0]; // Formato YYYY-MM-DD
 
     try {
-        const incidencias = await getIncidenciasByDNI(dni);
+        const incidencias = await getIncidenciasByDNI(dni, fechaInicio, fechaFin); 
+        console.log("inci:",incidencias);
+        
 
-        if (!incidencias || incidencias.length === 0) {
-            return res.status(404).json({ message: 'No se encontraron incidencias para el sereno con el DNI proporcionado' });
+        if (!incidencias || incidencias.data.length === 0) {
+            return res.status(200).json({ message: 'No se encontraron incidencias para el sereno con el DNI proporcionado', data: [] });
         }
 
         res.status(200).json({
-            message: 'Incidencias obtenidas correctamente',
+            success: true,
+            message: `Se encontraron ${incidencias.length} incidencias.`,
             data: incidencias.data.map(incidencia => ({
                 id: incidencia.id,
                 codigo_incidencia: incidencia.codigo_incidencia,
-                // tipo_caso_id: incidencia.tipo_caso_id,
-                sub_tipo_caso_id: incidencia.sub_tipo_caso_id,
-                // cargo_sereno_id: incidencia.cargo_sereno_id, // CARGO DEL SERENO " NOMBRE"
-                // sereno_id : incidencia.sereno_id, // nombre del sereno
-                jurisdiccion_id: incidencia.jurisdiccion_id, // nombre de la jurisdiccion
+                nombre_sereno: incidencia.sereno_nombre, 
+                sub_tipo_caso: incidencia.sub_tipo_caso_nombre,
+                cargo_sereno: incidencia.cargo_sereno_nombre,
+                jurisdiccion: incidencia.jurisdiccion_nombre,
                 fecha: incidencia.fecha_ocurrencia,
                 hora: incidencia.hora_ocurrencia,
             }))
@@ -36,6 +44,7 @@ const getIncidenciasByDNIHandler = async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor al obtener las incidencias' });
     }
 };
+
 
 // Handler para obtener una incidencia por su ID
 const getIncidenciaByIDHandler = async (req, res) => {
@@ -54,8 +63,9 @@ const getIncidenciaByIDHandler = async (req, res) => {
         }
 
         res.status(200).json({
-            message: 'Incidencia obtenida correctamente',
-            data: incidencia
+            success: incidencia.success,
+            message: incidencia.message,
+            data: incidencia.data
         });
     } catch (error) {
         console.error('Error al obtener incidencia por ID:', error);

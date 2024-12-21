@@ -5,7 +5,7 @@ const { getIncidenciasByDNIHandler, getIncidenciaByIDHandler, postIncidenciaHand
 
 const router = Router();
 
-router.get('/dni/:dni', getIncidenciasByDNIHandler);
+router.get('/dni/:dni', getIncidenciasByDNIHandler); // 76578857?fechaInicio=2024-12-01&fechaFin=2024-12-31
 router.get('/incidencia/:cod_incidencia', getIncidenciaByIDHandler);
 router.post('/', postIncidenciaHandler);
 
