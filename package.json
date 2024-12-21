@@ -18,6 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.7.9",
+    "backendincidencias": "file:",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.0.1",
@@ -29,6 +30,5 @@
     "sequelize": "^6.37.5",
     "socket.io": "^4.8.1"
   },
-  "devDependencies": {},
   "description": ""
 }
