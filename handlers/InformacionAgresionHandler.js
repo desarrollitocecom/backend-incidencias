@@ -3,7 +3,7 @@ const {
     getAllGeneroAgresor,
     getAllGeneroVictima,
     getAllSeveridadProcesos,
-   
+    getAllSeveridades
 } = require('../controllers/InformacionAgresionController');
 
 const getAllEstadoProcesoHandler = async (req, res) => {
@@ -11,10 +11,16 @@ const getAllEstadoProcesoHandler = async (req, res) => {
        
         const EstadoProceso = await getAllEstadoProceso();
 
+        
         return res.status(200).json({
-            message: "EstadoProceso obtenidas correctamente",
-            data: EstadoProceso,
-        });
+            message: "Estados Proceso obtenidas correctamente",
+            data: EstadoProceso.data.map(({ id, descripcion }) => ({
+            id,
+            descripcion
+        }))
+        
+    });
+
     } catch (error) {
         console.error("Error en EstadoProcesoHandler:", error.message);
         return res.status(500).json({
@@ -26,12 +32,15 @@ const getAllEstadoProcesoHandler = async (req, res) => {
 const getAllGeneroAgresorHandler = async (req, res) => {
     try {
      
-        const unidades = await getAllGeneroAgresor();
+        const generos_agresor = await getAllGeneroAgresor();
 
         return res.status(200).json({
-            message: "Unidades obtenidas correctamente",
-            data: unidades,
-        });
+            message: "Estados Proceso obtenidas correctamente",
+            data: generos_agresor.data.map(({ id, descripcion }) => ({
+            id,
+            descripcion     
+        }))
+    });
     } catch (error) {
         console.error("Error en getAllUnidadesHandler:", error.message);
         return res.status(500).json({
@@ -43,12 +52,15 @@ const getAllGeneroAgresorHandler = async (req, res) => {
 const getAllGeneroVictimaHandler = async (req, res) => {
     try {
      
-        const unidades = await getAllGeneroVictima();
+        const genero_victima = await getAllGeneroVictima();
 
         return res.status(200).json({
-            message: "Unidades obtenidas correctamente",
-            data: unidades,
-        });
+            message: "Estados Proceso obtenidas correctamente",
+            data: genero_victima.data.map(({ id, descripcion }) => ({
+            id,
+            descripcion     
+        }))
+    });
     } catch (error) {
         console.error("Error en getAllUnidadesHandler:", error.message);
         return res.status(500).json({
@@ -61,16 +73,40 @@ const getAllGeneroVictimaHandler = async (req, res) => {
 const getAllSeveridadProcesosHandler = async (req, res) => {
     try {
      
-        const unidades = await getAllSeveridadProcesos();
+        const severidad_procesos = await getAllSeveridadProcesos();
 
         return res.status(200).json({
-            message: "Unidades obtenidas correctamente",
-            data: unidades,
-        });
+            message: "Estados Proceso obtenidas correctamente",
+            data: severidad_procesos.data.map(({ id, descripcion }) => ({
+            id,
+            descripcion     
+        }))
+    });
     } catch (error) {
         console.error("Error en getAllUnidadesHandler:", error.message);
         return res.status(500).json({
             message: "Error al obtener las unidades",
+            error: error.message,
+        });
+    }
+};
+const getAllSeveridadesHandler = async (req, res) => {
+    try {
+     
+        const severidades = await getAllSeveridades();
+
+        return res.status(200).json({
+            message: "severidades obtenidas correctamente",
+            data: severidades.data.map(({ id, descripcion,habilitado }) => ({
+            id,
+            descripcion ,
+            habilitado   
+        }))
+    });
+    } catch (error) {
+        console.error("Error en getAllseveridadesHandler:", error.message);
+        return res.status(500).json({
+            message: "Error al obtener las severidades",
             error: error.message,
         });
     }
@@ -82,5 +118,5 @@ module.exports = {
     getAllGeneroAgresorHandler,
     getAllGeneroVictimaHandler,
     getAllSeveridadProcesosHandler,
-   
+    getAllSeveridadesHandler
  };

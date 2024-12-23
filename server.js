@@ -19,7 +19,7 @@ const server = http.createServer(app); // servidor http a partir de express
 
 initializeSocket(server); // Inicializamos Socket.io
 
-app.use("/api", router);
+app.use("/", router);
 
 app.get("/", async (req, res) => {
   
@@ -29,7 +29,7 @@ app.get("/", async (req, res) => {
 
 server.listen(PORT_FISCA, () => {
   console.log(`FISCA Server is running on port ${PORT_FISCA}`);
-  console.log(process.env.INCIDENCIAS_URL);
+ 
   sequelize.sync({ alter: true }) // cambiar de alter a force para que se borren las tablas y se creen de nuevo, hasta que queden bien diseñadas
     .then(() => console.log("Database is connected"))
     .catch(err => console.error("Error connecting to the database:", err));
