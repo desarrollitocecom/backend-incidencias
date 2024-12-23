@@ -3,7 +3,7 @@ const {
     getAllGeneroAgresor,
     getAllGeneroVictima,
     getAllSeveridadProcesos,
-    getAllSeveridades
+   
 } = require('../controllers/InformacionAgresionController');
 
 const getAllEstadoProcesoHandler = async (req, res) => {
@@ -75,34 +75,12 @@ const getAllSeveridadProcesosHandler = async (req, res) => {
         });
     }
 };
-const getAllSeveridadesHandler = async (req, res) => {
-    try {
-     
-        const severidades = await getAllSeveridades();
 
-        return res.status(200).json({
-            message: "severidades obtenidas correctamente",
-            data: severidades.data.map((severidades) =>
-                ({
-                    id: severidades.id,
-                    descripcion: severidades.descripcion,
-                    habilitado:severidades.habilitado
-                    
-                }))
-        });
-    } catch (error) {
-        console.error("Error en getAllseveridadesHandler:", error.message);
-        return res.status(500).json({
-            message: "Error al obtener las severidades",
-            error: error.message,
-        });
-    }
-};
 
 module.exports = { 
     getAllEstadoProcesoHandler,
     getAllGeneroAgresorHandler,
     getAllGeneroVictimaHandler,
     getAllSeveridadProcesosHandler,
-    getAllSeveridadesHandler
+   
  };
