@@ -19,6 +19,7 @@ const getAllEstadoProceso = async () => {
         throw error;
     }
 };
+
 const getAllGeneroAgresor = async () => {
   
     try {
