@@ -19,13 +19,14 @@ const server = http.createServer(app); // servidor http a partir de express
 
 initializeSocket(server); // Inicializamos Socket.io
 
-app.use("/api", router);
+app.use("/", router);
 
 app.get("/", async (req, res) => {
   
   res.json({ message: "El servidor esta funcionando!", data: "Bien perro!" });
 
 });
+
 
 server.listen(PORT_INCIDENCIAS, () => {
   console.log(`INCIDENCIAS Server is running on port ${PORT_INCIDENCIAS}`);
