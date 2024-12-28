@@ -3,8 +3,8 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
     const Incidencia = sequelize.define('Incidencia', {
         id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
         descripcion: {
@@ -15,6 +15,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        fotos:{
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            allowNull: true
+        },
         state:{
             type: DataTypes.BOOLEAN,
             allowNull: false,
@@ -24,13 +28,6 @@ module.exports = (sequelize) => {
         tableName: 'Incidencias',
         timestamps: true
     });
-
-    Incidencia.associate = (db) => {
-        Incidencia.belongsTo(db.Subgerencia, {
-            foreignKey: 'id_subgerencia', // Clave foránea
-            as: 'Subgerencia' // Alias para la relación
-        });
-    };
 
     return Incidencia;
 };

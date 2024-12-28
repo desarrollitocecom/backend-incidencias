@@ -38,18 +38,21 @@ const postIncidencia = async (incidencia, archivos) => {
     try {
         const formData = new FormData();
 
+        // console.log("6");
+        // console.log("incidencia: ", incidencia);
+        // console.log("archivos: ", archivos);
         // Agregar datos al FormData
         Object.keys(incidencia).forEach((key) => {
             formData.append(key, incidencia[key]);
         });
-
+        //console.log("7");
         // Agregar archivos al FormData
         if (archivos && archivos.length > 0) {
             archivos.forEach((file) => {
                 formData.append('file_save[]', fs.createReadStream(file.path), file.originalname);
             });
         }
-
+        //console.log("8");
         const { data, status } = await axios.post(
             `${INCIDENCIAS_URL}/api/crear_incidencia`,
             formData,
@@ -60,7 +63,7 @@ const postIncidencia = async (incidencia, archivos) => {
                 }
             }
         );
-
+       // console.log("9");
         if (data.success !== true) throw new Error("Error al crear la incidencia");
 
         return data;

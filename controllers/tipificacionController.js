@@ -10,7 +10,7 @@ const getUnidades = async () => {
         if (status !== 200) {
             throw new Error("Error al obtener las unidades");
         }
-        console.log(data);
+        //console.log(data);
         return data;
     } catch (error) {
         console.error(error);

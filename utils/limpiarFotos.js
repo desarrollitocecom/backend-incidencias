@@ -8,11 +8,11 @@ const eliminarArchivosTemporales = (archivos) => {
         const filePath =file.path; // Ruta completa
         // console.log("file: ",filePath);
         fs.unlink(filePath, (err) => {
-            if (err) // Si hay error{
+            if (err) {
                 console.error(`Error al eliminar el archivo ${filePath}:`, err.message);
-            // } else {
-            //     console.log(`Archivo eliminado correctamente: ${filePath}`);
-            // }
+            } else {
+                console.log(`Archivo eliminado correctamente: ${filePath}`);
+            }
         });
     });
 };

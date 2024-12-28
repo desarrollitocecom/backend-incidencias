@@ -1,12 +1,21 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const foto_path = process.env.FOTOS_RUTA;
 
 // Configuración de almacenamiento de archivos
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, `${foto_path}/incidencias/fotos`); // Carpeta donde se guardarán los archivos temporalmente
+        const dir = path.join(foto_path, 'incidencias', 'fotos');
+        
+        // Verificar si el directorio existe, si no, crearlo
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+            console.log('Directorio creado:', dir);
+        }
+
+        cb(null, dir);
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`);

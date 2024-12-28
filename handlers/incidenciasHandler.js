@@ -18,8 +18,6 @@ const getIncidenciasByDNIHandler = async (req, res) => {
     try {
         const incidencias = await getIncidenciasByDNI(dni, fechaInicio, fechaFin); 
         // console.log("inci:",incidencias);
-        
-
         if (!incidencias || incidencias.data.length === 0) {
             return res.status(200).json({ message: 'No se encontraron incidencias para el sereno con el DNI proporcionado', data: [] });
         }
@@ -77,21 +75,16 @@ const postIncidenciaHandler = async (req, res) => {
     try {
         const incidencia = req.body; // Datos normales
         const archivos = req.files; // Archivos subidos por Multer
-
+        
         if (!incidencia) {
             return res.status(400).json({ message: 'La información de la incidencia es requerida' });
         }
-
         const nuevaIncidencia = await postIncidencia(incidencia, archivos);
-
         if (!nuevaIncidencia) {
             return res.status(500).json({ message: 'Error al crear la incidencia' });
         }
-         eliminarArchivosTemporales(archivos); // Eliminar archivos temporales
-        return res.status(201).json({
-            message: 'Incidencia creada correctamente',
-            data: nuevaIncidencia
-        });
+        if(archivos) eliminarArchivosTemporales(archivos); // Eliminar archivos temporales
+        return res.status(201).json(nuevaIncidencia);
     } catch (error) {
         console.error('Error al crear la incidencia:', error.message);
         res.status(500).json({
