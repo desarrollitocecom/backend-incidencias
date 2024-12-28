@@ -1,6 +1,5 @@
-// handlers/incidenciasHandler.js
-
 const { getIncidenciasByDNI, getIncidenciaByID, postIncidencia } = require('../controllers/incidenciasController');
+const eliminarArchivosTemporales = require('../utils/limpiarFotos');
 
 // Handler para obtener incidencias por DNI
 const getIncidenciasByDNIHandler = async (req, res) => {
@@ -18,7 +17,7 @@ const getIncidenciasByDNIHandler = async (req, res) => {
 
     try {
         const incidencias = await getIncidenciasByDNI(dni, fechaInicio, fechaFin); 
-        console.log("inci:",incidencias);
+        // console.log("inci:",incidencias);
         
 
         if (!incidencias || incidencias.data.length === 0) {
@@ -27,7 +26,7 @@ const getIncidenciasByDNIHandler = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: `Se encontraron ${incidencias.length} incidencias.`,
+            message: `Se encontraron ${incidencias.data.length} incidencias.`,
             data: incidencias.data.map(incidencia => ({
                 id: incidencia.id,
                 codigo_incidencia: incidencia.codigo_incidencia,
@@ -69,32 +68,36 @@ const getIncidenciaByIDHandler = async (req, res) => {
         });
     } catch (error) {
         console.error('Error al obtener incidencia por ID:', error);
-        res.status(500).json({ error: 'Error interno del servidor al obtener la incidencia' });
+        res.status(500).json({ error: 'Error interno del servidor al obtener la incidencia por ID' });
     }
 };
 
 // Handler para crear una nueva incidencia
 const postIncidenciaHandler = async (req, res) => {
-    const incidencia = req.body;
-
-    if (!incidencia) {
-        return res.status(400).json({ message: 'La información de la incidencia es requerida' });
-    }
-
     try {
-        const nuevaIncidencia = await postIncidencia(incidencia);
+        const incidencia = req.body; // Datos normales
+        const archivos = req.files; // Archivos subidos por Multer
+
+        if (!incidencia) {
+            return res.status(400).json({ message: 'La información de la incidencia es requerida' });
+        }
+
+        const nuevaIncidencia = await postIncidencia(incidencia, archivos);
 
         if (!nuevaIncidencia) {
             return res.status(500).json({ message: 'Error al crear la incidencia' });
         }
-
-        res.status(201).json({
+         eliminarArchivosTemporales(archivos); // Eliminar archivos temporales
+        return res.status(201).json({
             message: 'Incidencia creada correctamente',
             data: nuevaIncidencia
         });
     } catch (error) {
-        console.error('Error al crear la incidencia:', error);
-        res.status(500).json({ error: 'Error interno del servidor al crear la incidencia' });
+        console.error('Error al crear la incidencia:', error.message);
+        res.status(500).json({
+            error: 'Error interno del servidor al crear la incidencia',
+            details: error.message
+        });
     }
 };
 

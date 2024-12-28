@@ -3,7 +3,7 @@ const express = require("express");
 const http = require("http");
 const { sequelize } = require("./db_connection");
 const router = require("./routes/index");
-const { PORT_FISCA } = process.env;
+const { PORT_INCIDENCIAS } = process.env;
 const { initializeSocket, userSockets } = require("./sockets");
 //const loginMiddleware = require("./checkers/validateToken");
 //const usuariosRouter = require("./routes/loginRouter");
@@ -27,8 +27,8 @@ app.get("/", async (req, res) => {
 
 });
 
-server.listen(PORT_FISCA, () => {
-  console.log(`FISCA Server is running on port ${PORT_FISCA}`);
+server.listen(PORT_INCIDENCIAS, () => {
+  console.log(`INCIDENCIAS Server is running on port ${PORT_INCIDENCIAS}`);
   console.log(process.env.INCIDENCIAS_URL);
   sequelize.sync({ alter: true }) // cambiar de alter a force para que se borren las tablas y se creen de nuevo, hasta que queden bien diseñadas
     .then(() => console.log("Database is connected"))

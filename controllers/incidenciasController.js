@@ -1,16 +1,14 @@
-const axios = require("axios");
+const axios = require('axios');
+const FormData = require('form-data');
+const fs = require('fs'); // Para manejar los archivos subidos
 
 const { INCIDENCIAS_URL } = process.env;
 
 
 const getIncidenciasByDNI = async (dni, fechaInicio = null, fechaFin = null) => {
     try {
-        const params = {};
-
-        if (fechaInicio) params.fechaInicio = fechaInicio;
-        if (fechaFin) params.fechaFin = fechaFin;
-        console.log("params: ",fechaInicio, fechaFin);
-        console.log(`${INCIDENCIAS_URL}/api/ver_incidencias_sereno/${dni}?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        // console.log("params: ",fechaInicio, fechaFin);
+        // console.log(`${INCIDENCIAS_URL}/api/ver_incidencias_sereno/${dni}?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
         const { data, status } = await axios.get(`${INCIDENCIAS_URL}/api/ver_incidencias_sereno/${dni}?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
         if (status !== 200) {
             throw new Error('Error al obtener las incidencias');
@@ -36,18 +34,41 @@ const getIncidenciaByID = async (cod_incidencia) => {
     }
 }
 
-const postIncidencia = async (incidencia) => {
+const postIncidencia = async (incidencia, archivos) => {
     try {
-        const { data, status } = await axios.post(`${INCIDENCIAS_URL}/api/crear_incidencia`, incidencia);
-        if (status !== 200) {
-            throw new Error("Error al crear la incidencia");
+        const formData = new FormData();
+
+        // Agregar datos al FormData
+        Object.keys(incidencia).forEach((key) => {
+            formData.append(key, incidencia[key]);
+        });
+
+        // Agregar archivos al FormData
+        if (archivos && archivos.length > 0) {
+            archivos.forEach((file) => {
+                formData.append('file_save[]', fs.createReadStream(file.path), file.originalname);
+            });
         }
+
+        const { data, status } = await axios.post(
+            `${INCIDENCIAS_URL}/api/crear_incidencia`,
+            formData,
+            {
+                headers: {
+                    ...formData.getHeaders(),
+                    // 'Authorization': `Bearer ${process.env.LARAVEL_API_TOKEN}` // Si es necesario
+                }
+            }
+        );
+
+        if (data.success !== true) throw new Error("Error al crear la incidencia");
+
         return data;
+    } catch (error) {
+        console.error('Error al crear incidencia:', error.response?.data || error.message);
+        throw error;
     }
-    catch (error) {
-        console.error(error);
-    }
-}
+};
 
 
 module.exports = { getIncidenciasByDNI, getIncidenciaByID, postIncidencia };
