@@ -1,4 +1,5 @@
 const { Incidencia } = require('../db_connection');
+const path = require('path');
 
 const getAllPreIncidencias = async () => {
     try {
@@ -61,4 +62,10 @@ const deletePreIncidencia = async (id) => {
     }
 };
 
-module.exports = { getAllPreIncidencias, getPreIncidenciaById, createPreIncidencia, updatePreIncidencia, deletePreIncidencia };
+const getPhotoPreIncidencia = async (name) => {
+    const foto_path = process.env.FOTOS_RUTA_PREINCIDENCIA;
+    const filePath = path.join(foto_path, 'preincidencias', 'fotos', name);
+    return filePath;
+};
+
+module.exports = { getAllPreIncidencias, getPreIncidenciaById, createPreIncidencia, updatePreIncidencia, deletePreIncidencia, getPhotoPreIncidencia };

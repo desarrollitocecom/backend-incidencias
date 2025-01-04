@@ -6,17 +6,17 @@ const getIncidenciasByDNIHandler = async (req, res) => {
     const { dni } = req.params;
     let { fechaInicio, fechaFin } = req.query;
 
-    if (!dni) 
+    if (!dni)
         return res.status(400).json({ message: 'El DNI es requerido' });
-    
-    if (fechaInicio) 
+
+    if (fechaInicio)
         fechaInicio = new Date(fechaInicio).toISOString().split('T')[0]; // Formato YYYY-MM-DD
 
-    if (fechaFin) 
+    if (fechaFin)
         fechaFin = new Date(fechaFin).toISOString().split('T')[0]; // Formato YYYY-MM-DD
 
     try {
-        const incidencias = await getIncidenciasByDNI(dni, fechaInicio, fechaFin); 
+        const incidencias = await getIncidenciasByDNI(dni, fechaInicio, fechaFin);
         // console.log("inci:",incidencias);
         if (!incidencias || incidencias.data.length === 0) {
             return res.status(200).json({ message: 'No se encontraron incidencias para el sereno con el DNI proporcionado', data: [] });
@@ -28,7 +28,7 @@ const getIncidenciasByDNIHandler = async (req, res) => {
             data: incidencias.data.map(incidencia => ({
                 id: incidencia.id,
                 codigo_incidencia: incidencia.codigo_incidencia,
-                nombre_sereno: incidencia.sereno_nombre, 
+                nombre_sereno: incidencia.sereno_nombre,
                 sub_tipo_caso: incidencia.sub_tipo_caso_nombre,
                 cargo_sereno: incidencia.cargo_sereno_nombre,
                 jurisdiccion: incidencia.jurisdiccion_nombre,
@@ -75,7 +75,7 @@ const postIncidenciaHandler = async (req, res) => {
     try {
         const incidencia = req.body; // Datos normales
         const archivos = req.files; // Archivos subidos por Multer
-        
+
         if (!incidencia) {
             return res.status(400).json({ message: 'La información de la incidencia es requerida' });
         }
@@ -83,7 +83,7 @@ const postIncidenciaHandler = async (req, res) => {
         if (!nuevaIncidencia) {
             return res.status(500).json({ message: 'Error al crear la incidencia' });
         }
-        if(archivos) eliminarArchivosTemporales(archivos); // Eliminar archivos temporales
+        if (archivos) eliminarArchivosTemporales(archivos); // Eliminar archivos temporales
         return res.status(201).json(nuevaIncidencia);
     } catch (error) {
         console.error('Error al crear la incidencia:', error.message);

@@ -23,7 +23,7 @@ app.use("/api", router);
 
 app.get("/", async (req, res) => {
 
-  res.json({ message: "El servidor esta funcionando!", data: "Bien perro!" });
+  res.json({ message: "El servidor esta funcionando!", data: "Gracias por usar el servidor!" });
 
 });
 

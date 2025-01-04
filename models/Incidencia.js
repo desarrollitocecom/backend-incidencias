@@ -12,14 +12,14 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         motivo: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false
         },
-        fotos:{
+        fotos: {
             type: DataTypes.ARRAY(DataTypes.STRING),
             allowNull: true
         },
-        state:{
+        state: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: true
