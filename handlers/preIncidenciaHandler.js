@@ -18,7 +18,6 @@ const getPreIncidenciaByIdHandler = async (req, res) => {
         const incidencia = await getPreIncidenciaById(id);
         res.status(200).json({ success: true, data: incidencia });
     } catch (error) {
-        console.error('error en createPreIncidenciaHandler:', error.message);
         res.status(404).json({ error: error.message });
     }
 };
