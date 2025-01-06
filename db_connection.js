@@ -10,6 +10,12 @@ const sequelize = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
   host: DB_HOST,
   dialect: 'postgres',
   logging: false, // Desactiva los logs de Sequelize
+  dialectOptions: {
+    ssl: {
+      require: false,
+      rejectUnauthorized: false
+    }
+  }
 });
 
 const db = {};
