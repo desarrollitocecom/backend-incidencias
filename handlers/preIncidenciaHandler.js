@@ -39,7 +39,6 @@ const createPreIncidenciaHandler = async (req, res) => {
                 incidencia.fotos.push(archivo.path.replace(/\\/g, '/'));
             }
         }
-
         if (!incidencia) {
             return res.status(400).json({ message: 'La información de la incidencia es requerida' });
         }
