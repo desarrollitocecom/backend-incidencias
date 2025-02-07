@@ -91,6 +91,7 @@ const validateIncidencia = {
     .isInt()
     .withMessage("Medio id debe ser un número entero"),
   medio_reporte_id: body("medio_reporte_id")
+    .optional()
     .isInt()
     .withMessage("Medio reporte id debe ser un número entero"),
   situacion_id: body("situacion_id")
@@ -129,7 +130,6 @@ const createIncidenciaValidator = () => {
     validateIncidencia.fecha_ocurrencia,
     validateIncidencia.hora_ocurrencia,
     validateIncidencia.estado_proceso_id,
-    validateIncidencia.estado_agresor_id,
     validateIncidencia.genero_agresor_id,
     validateIncidencia.genero_victima_id,
     validateIncidencia.severidad_proceso_id,
