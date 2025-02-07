@@ -58,58 +58,58 @@ const postIncidencia = async (incidencia) => {
       }
     });
 
-    const data = {
-      success: true,
-      data: {
-        unidad_id: "1",
-        tipo_caso_id: "2063",
-        sub_tipo_caso_id: "2127",
-        tipo_reportante_id: "2",
-        direccion: "jr Ayacucho",
-        latitud: "12.54",
-        longitud: "23.87",
-        descripcion: "Un echo grave en el distrito SJL, el dia Martes",
-        fecha_ocurrencia: "2024-10-11",
-        hora_ocurrencia: "15:34",
-        severidad_id: "1",
-        jurisdiccion_id: "1",
-        medio_id: "1",
-        situacion_id: "1",
-        operador_id: "1",
-        estado_proceso_id: "1",
-        genero_agresor_id: "1",
-        genero_victima_id: "2",
-        severidad_proceso_id: "1",
-        cargo_sereno_id: "1",
-        sereno_id: "2",
-        user_id: 1,
-        codigo_incidencia: "R2025380633",
-        updated_at: "2025-02-04T15:56:40.339000Z",
-        created_at: "2025-02-04T15:56:40.339000Z",
-        id: 944828,
-      },
-      codigo_incidencia: "R2025380633",
-      message: "Incidencia registrada correctamente",
-    };
-    // const { data, status } = await axios.post(
-    //   `${INCIDENCIAS_URL}/api/crear_incidencia`,
-    //   formData,
-    //   {
-    //     headers: {
-    //       ...formData.getHeaders(),
-    //     },
+    // const data = {
+    //   success: true,
+    //   data: {
+    //     unidad_id: "1",
+    //     tipo_caso_id: "2063",
+    //     sub_tipo_caso_id: "2127",
+    //     tipo_reportante_id: "2",
+    //     direccion: "jr Ayacucho",
+    //     latitud: "12.54",
+    //     longitud: "23.87",
+    //     descripcion: "Un echo grave en el distrito SJL, el dia Martes",
+    //     fecha_ocurrencia: "2024-10-11",
+    //     hora_ocurrencia: "15:34",
+    //     severidad_id: "1",
+    //     jurisdiccion_id: "1",
+    //     medio_id: "1",
+    //     situacion_id: "1",
+    //     operador_id: "1",
+    //     estado_proceso_id: "1",
+    //     genero_agresor_id: "1",
+    //     genero_victima_id: "2",
+    //     severidad_proceso_id: "1",
+    //     cargo_sereno_id: "1",
+    //     sereno_id: "2",
+    //     user_id: 1,
+    //     codigo_incidencia: "R2025380633",
+    //     updated_at: "2025-02-04T15:56:40.339000Z",
+    //     created_at: "2025-02-04T15:56:40.339000Z",
+    //     id: 944828,
     //   },
-    // );
+    //   codigo_incidencia: "R2025380633",
+    //   message: "Incidencia registrada correctamente",
+    // };
+    const { data, status } = await axios.post(
+      `${INCIDENCIAS_URL}/api/crear_incidencia`,
+      formData,
+      {
+        headers: {
+          ...formData.getHeaders(),
+        },
+      },
+    );
 
-    // if (data.success !== true) throw new Error("Error al crear la incidencia");
+    if (data.success !== true) throw new Error("Error al crear la incidencia");
 
     incidenciaData.estado = "APROBADO";
     incidenciaData.convertidaAIncidencia = true;
     incidenciaData.codigo_incidencia = data.codigo_incidencia;
 
     const preincidencia = await updatePreIncidencia(id, incidenciaData);
-    return data;
-    // return preincidencia;
+    // return data;
+    return preincidencia;
   } catch (error) {
     console.log("Error: ", error);
     throw error;
