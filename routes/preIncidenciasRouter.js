@@ -1,18 +1,48 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const { getAllPreIncidenciasHandler, getPreIncidenciaByIdHandler, createPreIncidenciaHandler, updatePreIncidenciaHandler, deletePreIncidenciaHandler, getPhotoPreIncidenciaHandler } = require('../handlers/preIncidenciaHandler');
-const uploadPreincidencia = require('../middlewares/uploadPreincidenciaMiddleware');
-const validate = require('../middlewares/validar-campos');
-const preIncidenciaValidator = require('../validators/preincidenciaValidator');
-const updatePreIncidenciaValidator = require('../validators/updatePreIncidenciaValidator');
+const {
+  getAllPreIncidenciasHandler,
+  getPreIncidenciaByIdHandler,
+  createPreIncidenciaHandler,
+  updatePreIncidenciaHandler,
+  deletePreIncidenciaHandler,
+  getPhotoPreIncidenciaHandler,
+  getPreIncidenciasBySerenoHandler,
+} = require("../handlers/preIncidenciaHandler");
+const {
+  errorHandlerMulter,
+  uploadPreincidencia,
+  validateMinFiles,
+} = require("../middlewares/uploadPreincidenciaMiddleware");
+const validate = require("../middlewares/validar-campos");
+const createPreIncidenciaValidator = require("../validators/preincidencia/createPreincidenciaValidator");
+const updatePreIncidenciaValidator = require("../validators/preincidencia/updatePreincidenciaValidator");
+const getPreincidenciaByIdValidator = require("../validators/preincidencia/getPreincidenciaByIdValidator");
 
-// Definición de rutas CRUD
-router.get('/', getAllPreIncidenciasHandler); // Obtener todas las incidencias
-router.use('/fotos/:name', getPhotoPreIncidenciaHandler);
-router.get('/:id', getPreIncidenciaByIdHandler); // Obtener una incidencia por ID
-router.post('/', uploadPreincidencia.array('file_save'), validate(preIncidenciaValidator), createPreIncidenciaHandler); // Crear preincidencia
-router.put('/:id', uploadPreincidencia.array('file_save'), validate(updatePreIncidenciaValidator), updatePreIncidenciaHandler); // Actualizar una incidencia por ID
-router.delete('/:id', deletePreIncidenciaHandler); // Eliminar una incidencia por ID
+router.get("/", getAllPreIncidenciasHandler);
+router.get("/fotos/:name", getPhotoPreIncidenciaHandler);
+router.get("/:id", getPreIncidenciaByIdHandler);
+router.get(
+  "/sereno/:id",
+  validate(getPreincidenciaByIdValidator()),
+  getPreIncidenciasBySerenoHandler,
+);
+router.post(
+  "/",
+  uploadPreincidencia,
+  errorHandlerMulter,
+  validateMinFiles,
+  validate(createPreIncidenciaValidator()),
+  createPreIncidenciaHandler,
+);
+router.put(
+  "/:id",
+  uploadPreincidencia,
+  errorHandlerMulter,
+  validate(updatePreIncidenciaValidator()),
+  updatePreIncidenciaHandler,
+);
+router.delete("/:id", deletePreIncidenciaHandler);
 
 module.exports = router;
