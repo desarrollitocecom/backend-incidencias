@@ -1,7 +1,7 @@
 const { body } = require("express-validator");
 
 const validateIncidencia = {
-  id: body("id").isUUID().withMessage("el ID debe ser un UUID válido"),
+  id: body("id").isUUID().withMessage("el ID debe ser un UUID válido."),
   unidad_id: body("unidad_id")
     .isInt()
     .withMessage("Unidad id debe ser un número entero"),
