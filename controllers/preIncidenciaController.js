@@ -44,16 +44,19 @@ const getPreIncidenciasBySereno = async (
   id,
   { fecha_inicio, fecha_fin, estado },
 ) => {
-  const fechaInicioConvertida = fecha_inicio ? new Date(fecha_inicio) : null;
-  const fechaFinConvertida = fecha_fin ? new Date(fecha_fin) : null;
+
 
   try {
     const whereClause = {
       sereno_id: id,
-      fecha_ocurrencia: {
-        ...(fechaInicioConvertida && { [Op.gte]: fechaInicioConvertida }),
-        ...(fechaFinConvertida && { [Op.lte]: fechaFinConvertida }),
-      },
+      ...(fecha_inicio || fecha_fin
+        ? {
+            fecha_ocurrencia: {
+              ...(fecha_inicio && { [Op.gte]: fecha_inicio }),
+              ...(fecha_fin && { [Op.lte]: fecha_fin }),
+            },
+          }
+        : {}),
       ...(estado ? { estado } : {}),
     };
 
