@@ -58,7 +58,6 @@ const createPreIncidenciaHandler = async (req, res) => {
     const incidencia = {
       ...req.body,
     };
-
     const archivos = req.files;
 
     incidencia.fotos = [];

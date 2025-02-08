@@ -88,6 +88,7 @@ const getPreIncidenciasBySereno = async (
 };
 
 const createPreIncidencia = async (incidenciaData) => {
+  delete incidenciaData.id;
   try {
     const nuevaIncidencia = await Incidencia.create(incidenciaData);
     return nuevaIncidencia;
@@ -103,6 +104,7 @@ const createPreIncidencia = async (incidenciaData) => {
 };
 
 const updatePreIncidencia = async (id, incidenciaData) => {
+  delete incidenciaData.id;
   try {
     const incidencia = await Incidencia.findByPk(id);
     if (!incidencia) {
