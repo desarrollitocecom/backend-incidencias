@@ -1,10 +1,15 @@
 const { body } = require("express-validator");
 
 const validateIncidencia = {
-  id: body("id").isUUID().withMessage("el ID debe ser un UUID válido"),
+  id: body("id").isUUID().withMessage("el ID debe ser un UUID válido."),
   unidad_id: body("unidad_id")
     .isInt()
     .withMessage("Unidad id debe ser un número entero"),
+  user_id: body("user_id")
+    .isString()
+    .withMessage("El user id debe ser de tipo string")
+    .isLength({ min: 1 })
+    .withMessage("El user id debe contener al menos un carácter"),  
   tipo_caso_id: body("tipo_caso_id")
     .isInt()
     .withMessage("Tipo caso id debe ser un número entero"),
@@ -26,7 +31,9 @@ const validateIncidencia = {
     .withMessage("Cargo sereno id debe ser un número entero"),
   nombre_reportante: body("nombre_reportante")
     .isString()
-    .withMessage("Nombre reportante debe ser un string"),
+    .withMessage("Nombre reportante debe ser un string")
+    .isLength({ min: 1 })
+    .withMessage("Nombre reportante no puede estar vacío"),
   sereno_id: body("sereno_id")
     .isInt()
     .withMessage("Sereno id debe ser un número entero"),
@@ -60,7 +67,7 @@ const validateIncidencia = {
     .isDate()
     .withMessage("Fecha registro debe ser una fecha válida"),
   hora_registro: body("hora_registro")
-    .matches(/^([0-9]|1[0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$/)
+    .matches(/^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$/)
     .withMessage(
       "Hora registro debe estar en formato H:mm, HH:mm, H:mm:ss o HH:mm:ss",
     ),
@@ -114,6 +121,7 @@ const createIncidenciaValidator = () => {
   return [
     validateIncidencia.id,
     validateIncidencia.unidad_id,
+    validateIncidencia.user_id,
     validateIncidencia.tipo_caso_id,
     validateIncidencia.sub_tipo_caso_id,
     validateIncidencia.tipo_reportante_id,

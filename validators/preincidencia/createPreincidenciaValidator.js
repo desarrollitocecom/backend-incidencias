@@ -26,7 +26,6 @@ const validatePreincidencia = {
     .isInt()
     .withMessage("Cargo sereno id debe ser un número entero"),
   nombre_reportante: body("nombre_reportante")
-    .optional()
     .isString()
     .withMessage("Nombre reportante debe ser un string"),
   sereno_id: body("sereno_id")
