@@ -70,7 +70,7 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
       fecha_registro: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true,
       },
       hora_registro: {
@@ -78,7 +78,7 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
       fecha_ocurrencia: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true,
       },
       hora_ocurrencia: {
