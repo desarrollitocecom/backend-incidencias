@@ -66,7 +66,7 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
       descripcion: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       fecha_registro: {
