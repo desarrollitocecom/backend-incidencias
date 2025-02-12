@@ -40,7 +40,6 @@ const getIncidenciaByID = async (cod_incidencia) => {
 };
 
 const postIncidencia = async (incidencia) => {
-  console.log(incidencia, "incidencia");
   const FOTOS_RUTA = process.env.FOTOS_RUTA_PREINCIDENCIA;
 
   const { id, ...incidenciaData } = incidencia;
