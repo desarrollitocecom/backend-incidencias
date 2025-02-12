@@ -44,8 +44,6 @@ const getPreIncidenciasBySereno = async (
   id,
   { fecha_inicio, fecha_fin, estado },
 ) => {
-
-
   try {
     const whereClause = {
       sereno_id: id,

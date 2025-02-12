@@ -9,7 +9,7 @@ const validateIncidencia = {
     .isString()
     .withMessage("El user id debe ser de tipo string")
     .isLength({ min: 1 })
-    .withMessage("El user id debe contener al menos un carácter"),  
+    .withMessage("El user id debe contener al menos un carácter"),
   tipo_caso_id: body("tipo_caso_id")
     .isInt()
     .withMessage("Tipo caso id debe ser un número entero"),

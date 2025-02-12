@@ -32,10 +32,12 @@ const loginFaceHandler = async (req, res) => {
       });
     }
 
-    const imageBuffer = await sharp(file.buffer).rotate().toBuffer();
+    const imageBuffer = await sharp(file.buffer, { failOn: "truncated" })
+      .rotate()
+      .jpeg({ quality: 80, mozjpeg: true })
+      .toBuffer();
 
     const fileBase64 = imageBuffer.toString("base64");
-
     const data = await loginFace(fileBase64);
     return res.status(200).json(data);
   } catch (error) {
