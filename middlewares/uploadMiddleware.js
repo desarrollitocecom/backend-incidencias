@@ -2,13 +2,12 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const foto_login_path = process.env.FOTOS_LOGIN_FACE;
+const foto_path = process.env.FOTOS_RUTA;
 
 // Configuración de almacenamiento de archivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // const dir = path.join(foto_login_path, "incidencias", "fotos");
-    const dir = process.env.FOTOS_LOGIN_FACE;
+    const dir = path.join(foto_path, "incidencias", "fotos");
 
     // Verificar si el directorio existe, si no, crearlo
     if (!fs.existsSync(dir)) {

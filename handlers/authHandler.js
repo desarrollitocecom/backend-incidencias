@@ -1,8 +1,6 @@
 // handlers/authHandler.js
 const sharp = require("sharp");
 const { loginUser, loginFace } = require("../controllers/authController");
-const fs = require("fs");
-const path = require("path");
 
 const loginHandler = async (req, res) => {
   const { email, password } = req.body;
