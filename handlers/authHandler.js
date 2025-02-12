@@ -1,6 +1,8 @@
 // handlers/authHandler.js
 const sharp = require("sharp");
 const { loginUser, loginFace } = require("../controllers/authController");
+const fs = require("fs");
+const path = require("path");
 
 const loginHandler = async (req, res) => {
   const { email, password } = req.body;
@@ -32,10 +34,12 @@ const loginFaceHandler = async (req, res) => {
       });
     }
 
-    const imageBuffer = await sharp(file.buffer).rotate().toBuffer();
+    const imageBuffer = await sharp(file.buffer, { failOn: "truncated" })
+      .rotate()
+      .jpeg({ quality: 80, mozjpeg: true })
+      .toBuffer();
 
     const fileBase64 = imageBuffer.toString("base64");
-
     const data = await loginFace(fileBase64);
     return res.status(200).json(data);
   } catch (error) {

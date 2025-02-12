@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
         validate: {
           notEmpty: true,
         },
-      },      
+      },
       unidad_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
