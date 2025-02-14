@@ -39,7 +39,7 @@ const errorHandlerMulter = (err, req, res, next) => {
       return res.status(400).json({
         success: false,
         statusCode: 400,
-        message: "Demasiados archivos. Solo puedes cargar hasta 2 archivos.",
+        message: "Demasiados archivos. Solo puedes cargar hasta 4 archivos.",
         error: "LIMIT_FILE_COUNT",
       });
     }
@@ -89,14 +89,14 @@ const checkFilesBeforeForwarding = multer({
       );
     }
   },
-  limits: { fileSize: 50 * 1024 * 1024, files: 2 },
-}).array("fotos", 2);
+  limits: { fileSize: 50 * 1024 * 1024, files: 4 },
+}).array("fotos",4);
 
 const uploadPreincidencia = multer({
   storage: storage,
   fileFilter: fileFilter,
-  limits: { fileSize: 50 * 1024 * 1024, files: 2 }, // 5 MB
-}).array("fotos", 2);
+  limits: { fileSize: 50 * 1024 * 1024, files: 4 }, // 5 MB
+}).array("fotos", 4);
 
 module.exports = {
   uploadPreincidencia,

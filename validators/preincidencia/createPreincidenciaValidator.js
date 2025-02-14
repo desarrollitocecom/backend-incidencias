@@ -5,11 +5,9 @@ const validatePreincidencia = {
     .isInt()
     .withMessage("Unidad id debe ser un número entero"),
   tipo_caso_id: body("tipo_caso_id")
-    .optional()
     .isInt()
     .withMessage("Tipo caso id debe ser un número entero"),
   sub_tipo_caso_id: body("sub_tipo_caso_id")
-    .optional()
     .isInt()
     .withMessage("Sub tipo caso id debe ser un número entero"),
   tipo_reportante_id: body("tipo_reportante_id")
@@ -32,7 +30,6 @@ const validatePreincidencia = {
     .isInt()
     .withMessage("Sereno id debe ser un número entero"),
   direccion: body("direccion")
-    .optional()
     .isString()
     .withMessage("Direccion debe ser un string"),
   latitud: body("latitud")
