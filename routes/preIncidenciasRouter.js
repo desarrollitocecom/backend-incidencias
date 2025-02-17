@@ -19,8 +19,9 @@ const validate = require("../middlewares/validar-campos");
 const createPreIncidenciaValidator = require("../validators/preincidencia/createPreincidenciaValidator");
 const updatePreIncidenciaValidator = require("../validators/preincidencia/updatePreincidenciaValidator");
 const getPreincidenciaByIdValidator = require("../validators/preincidencia/getPreincidenciaByIdValidator");
+const getFilteredDataValidator = require("../validators/preincidencia/getPreincidenciaFilters");
 
-router.get("/", getAllPreIncidenciasHandler);
+router.get("/", validate(getFilteredDataValidator()), getAllPreIncidenciasHandler);
 router.get("/fotos/:name", getPhotoPreIncidenciaHandler);
 router.get("/:id", getPreIncidenciaByIdHandler);
 router.get(

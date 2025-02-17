@@ -11,9 +11,13 @@ const {
 } = require("../controllers/preIncidenciaController");
 
 const getAllPreIncidenciasHandler = async (req, res) => {
+  const { page = 1, limit = 20, jurisdiccion_id } = req.query;
+
+  const numPage = parseInt(page);
+  const numLimit = parseInt(limit);
   try {
-    const incidencias = await getAllPreIncidencias();
-    res.status(200).json({ success: true, data: incidencias });
+    const response = await getAllPreIncidencias(numPage, numLimit, jurisdiccion_id);
+    res.status(200).json({ success: true, data: response.incidencias, totalCount: response.totalCount });
   } catch (error) {
     console.error("error en getAllPreIncidenciaHandler:", error.message);
     res.status(500).json(error);

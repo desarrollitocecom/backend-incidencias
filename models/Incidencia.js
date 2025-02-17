@@ -50,7 +50,7 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
       direccion: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       latitud: {
@@ -119,7 +119,7 @@ module.exports = (sequelize) => {
       },
       motivo: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       fotos: {
         type: DataTypes.ARRAY(DataTypes.STRING),
