@@ -129,10 +129,6 @@ const validateUpatePreIncidencia = {
     .optional()
     .isInt()
     .withMessage("Operador id debe ser un número entero"),
-  motivo: body("motivo")
-    .optional()
-    .isString()
-    .withMessage("Motivo debe ser un texto"),
   descripcion: body("descripcion")
     .optional()
     .isString()
@@ -172,7 +168,6 @@ const updatePreIncidenciaValidator = () => {
     validateUpatePreIncidencia.medio_reporte_id,
     validateUpatePreIncidencia.situacion_id,
     validateUpatePreIncidencia.operador_id,
-    validateUpatePreIncidencia.motivo,
     validateUpatePreIncidencia.descripcion,
     validateUpatePreIncidencia.fotos,
   ];

@@ -108,7 +108,6 @@ const validateIncidencia = {
   operador_id: body("operador_id")
     .isInt()
     .withMessage("Operador id debe ser un número entero"),
-  motivo: body("motivo").isString().withMessage("Motivo debe ser un texto"),
   descripcion: body("descripcion")
     .isString()
     .withMessage("Descripcion debe ser un texto"),
@@ -146,7 +145,6 @@ const createIncidenciaValidator = () => {
     validateIncidencia.medio_reporte_id,
     validateIncidencia.situacion_id,
     validateIncidencia.operador_id,
-    validateIncidencia.motivo,
     validateIncidencia.descripcion,
     validateIncidencia.fotos,
   ];
