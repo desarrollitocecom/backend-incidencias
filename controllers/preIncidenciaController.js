@@ -2,15 +2,27 @@ const path = require("path");
 const { Incidencia } = require("../db_connection");
 const { Op } = require("sequelize");
 
-const getAllPreIncidencias = async () => {
+const getAllPreIncidencias = async (page = 1, limit = 20, jurisdiccion_id) => {
+  const offset = page == 0 ? null : (page - 1) * limit;
+  limit = page == 0 ? null : limit;
+
   try {
-    const incidencias = await Incidencia.findAll({
-      where: {
-        estado: "PENDIENTE",
-        isDeleted: false,
-      },
+    const whereClause = {
+      estado: "PENDIENTE",
+      isDeleted: false,
+    };
+
+    if (jurisdiccion_id) {
+      const ids = jurisdiccion_id.split(",").map((id) => id.trim());
+      whereClause.jurisdiccion_id = { [Op.in]: ids };
+    }
+
+    const response = await Incidencia.findAndCountAll({
+      where: whereClause,
+      limit,
+      offset,
     });
-    return incidencias;
+    return { incidencias: response.rows, totalCount: response.count };
   } catch (error) {
     console.log("Error: ", error);
     const errorResponse = {
@@ -49,11 +61,11 @@ const getPreIncidenciasBySereno = async (
       sereno_id: id,
       ...(fecha_inicio || fecha_fin
         ? {
-            fecha_ocurrencia: {
-              ...(fecha_inicio && { [Op.gte]: fecha_inicio }),
-              ...(fecha_fin && { [Op.lte]: fecha_fin }),
-            },
-          }
+          fecha_ocurrencia: {
+            ...(fecha_inicio && { [Op.gte]: fecha_inicio }),
+            ...(fecha_fin && { [Op.lte]: fecha_fin }),
+          },
+        }
         : {}),
       ...(estado ? { estado } : {}),
     };

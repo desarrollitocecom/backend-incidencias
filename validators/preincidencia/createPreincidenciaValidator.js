@@ -112,11 +112,10 @@ const validatePreincidencia = {
     .optional()
     .isInt()
     .withMessage("Operador id debe ser un número entero"),
-  motivo: body("motivo").isString().withMessage("Motivo debe ser un texto"),
   descripcion: body("descripcion")
     .isString()
-    .isLength({ min: 10 })
-    .withMessage("Descripcion debe ser un texto mìnimo 10 caracteres"),
+    .isLength({ min: 10, max: 5000 })
+    .withMessage("Descripcion debe ser un texto mìnimo 1 caracteres"),
 };
 
 const createPreincidenciaValidator = () => {
@@ -147,7 +146,6 @@ const createPreincidenciaValidator = () => {
     validatePreincidencia.medio_reporte_id,
     validatePreincidencia.situacion_id,
     validatePreincidencia.operador_id,
-    validatePreincidencia.motivo,
     validatePreincidencia.descripcion,
   ];
 };
