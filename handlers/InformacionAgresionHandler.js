@@ -63,6 +63,7 @@ const getAllGeneroVictimaHandler = async (req, res) => {
     });
   }
 };
+
 const getAllSeveridadProcesosHandler = async (req, res) => {
   try {
     const severidad_procesos = await getAllSeveridadProcesos();
