@@ -18,13 +18,35 @@ const getUnidades = async () => {
 
 const getTipoCaso = async () => {
   try {
-    const { data, status } = await axios.get(
+    const { data: tipoCasoData, status } = await axios.get(
       `${INCIDENCIAS_URL}/api/ver_tipo_caso`,
     );
+
+    const { data: subTipoCasoData } = await axios.get(
+      `${INCIDENCIAS_URL}/api/ver_subtipo_caso`,
+    );
+
     if (status !== 200) {
       throw new Error("Error al obtener los tipos de caso");
     }
-    return data;
+
+    const tipoCasoConSubtipos = tipoCasoData.data.map(tipoCaso => {
+      return {
+        ...tipoCaso,
+        subtipos: subTipoCasoData.data
+          .filter(subtipo => subtipo.tipo_caso_id === tipoCaso.id.toString())
+          .map((subtipo) => {
+            return {
+              id: subtipo.id,
+              tipo_caso_id: subtipo.tipo_caso_id,
+              descripcion: subtipo.descripcion,
+              codigo: subtipo.codigo,
+            }
+          })
+      };
+    });
+
+    return tipoCasoConSubtipos;
   } catch (error) {
     console.error(error);
   }

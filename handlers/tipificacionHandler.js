@@ -28,11 +28,13 @@ const getTipoCasoHandler = async (req, res) => {
     const tiposCaso = await getTipoCaso();
     res.status(200).json({
       message: "Tipos de caso obtenidos correctamente",
-      data: tiposCaso.data.map((tipoCaso) => ({
+      data: tiposCaso.map((tipoCaso) => ({
         id: tipoCaso.id,
         descripcion: tipoCaso.descripcion,
         unidad_id: tipoCaso.unidad_id,
         codigo: tipoCaso.codigo,
+        subtipos: tipoCaso.subtipos,
+
       })),
     });
   } catch (error) {
@@ -52,6 +54,7 @@ const getSubTipoCasoHandler = async (req, res) => {
         id: subtipoCaso.id,
         descripcion: subtipoCaso.descripcion,
         unidad_id: subtipoCaso.unidad_id,
+        tipo_caso_id: subtipoCaso.tipo_caso_id,
       })),
     });
   } catch (error) {
