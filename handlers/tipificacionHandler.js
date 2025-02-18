@@ -26,15 +26,27 @@ const getUnidadesHandler = async (req, res) => {
 const getTipoCasoHandler = async (req, res) => {
   try {
     const tiposCaso = await getTipoCaso();
+
+    const tiposCasoOrdenados = tiposCaso.sort((a, b) => {
+      if (a.descripcion === null || a.descripcion === undefined) return 1;
+      if (b.descripcion === null || b.descripcion === undefined) return -1;
+
+      const prefixA = a.descripcion.substring(0, 4).toUpperCase();
+      const prefixB = b.descripcion.substring(0, 4).toUpperCase();
+
+      if (prefixA < prefixB) return -1;
+      if (prefixA > prefixB) return 1;
+      return 0;
+    });
+
     res.status(200).json({
       message: "Tipos de caso obtenidos correctamente",
-      data: tiposCaso.map((tipoCaso) => ({
+      data: tiposCasoOrdenados.map((tipoCaso) => ({
         id: tipoCaso.id,
         descripcion: tipoCaso.descripcion,
         unidad_id: tipoCaso.unidad_id,
         codigo: tipoCaso.codigo,
         subtipos: tipoCaso.subtipos,
-
       })),
     });
   } catch (error) {
@@ -44,6 +56,8 @@ const getTipoCasoHandler = async (req, res) => {
     });
   }
 };
+
+
 
 const getSubTipoCasoHandler = async (req, res) => {
   try {

@@ -35,6 +35,7 @@ const getTipoCaso = async () => {
         ...tipoCaso,
         subtipos: subTipoCasoData.data
           .filter(subtipo => subtipo.tipo_caso_id === tipoCaso.id.toString())
+          .sort((a, b) => a.descripcion.substring(0, 6).localeCompare(b.descripcion.substring(0, 6)))
           .map((subtipo) => {
             return {
               id: subtipo.id,

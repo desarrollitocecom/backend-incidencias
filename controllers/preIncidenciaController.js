@@ -1,4 +1,6 @@
 const path = require("path");
+const axios = require("axios");
+
 const { Incidencia } = require("../db_connection");
 const { Op } = require("sequelize");
 
@@ -35,12 +37,42 @@ const getAllPreIncidencias = async (page = 1, limit = 20, jurisdiccion_id) => {
 };
 
 const getPreIncidenciaById = async (id) => {
+  const { INCIDENCIAS_URL } = process.env;
+
   try {
     const incidencia = await Incidencia.findByPk(id);
     if (!incidencia) {
       throw new Error("Incidencia no encontrada con el Id");
     }
-    return incidencia;
+
+    const { data: tipoCasoData, status } = await axios.get(
+      `${INCIDENCIAS_URL}/api/ver_tipo_caso`,
+    );
+
+    const { data: subTipoCasoData } = await axios.get(
+      `${INCIDENCIAS_URL}/api/ver_subtipo_caso`,
+    );
+
+    const tipoCasoDescripcion = tipoCasoData.data.find(
+      (tipo) => tipo.id === incidencia.tipo_caso_id
+    )?.descripcion || null;
+
+    const subTipoCasoDescripcion = subTipoCasoData.data.find(
+      (subTipo) => subTipo.id === incidencia.sub_tipo_caso_id
+    )?.descripcion || null;
+
+    return {
+      id: incidencia.id,
+      user_id: incidencia.user_id,
+      tipo_caso_descripcion: tipoCasoDescripcion,
+      sub_tipo_caso_descripcion: subTipoCasoDescripcion,
+      descripcion: incidencia.descripcion,
+      fecha_ocurrencia: incidencia.fecha_ocurrencia,
+      hora_ocurrencia: incidencia.hora_ocurrencia,
+      estado: incidencia.estado,
+      codigo_incidencia: incidencia.codigo_incidencia,
+      direccion: incidencia.direccion,
+    };
   } catch (error) {
     console.log("Error: ", error);
     const errorResponse = {
