@@ -21,12 +21,22 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/png"];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/heic",
+    "image/heif", // Formato HEIF
+    "image/webp", // Formato WebP
+    "image/gif",  // Formato GIF
+    "image/bmp",  // Formato BMP
+    "image/tiff"  // Formato TIFF
+  ];
+
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
     cb(
-      new Error("Tipo de archivo no permitido. Solo JPG, PNG son aceptados."),
+      new Error("Tipo de archivo no permitido. Solo se aceptan formatos de imagen comunes."),
       false,
     );
   }
@@ -79,18 +89,27 @@ const validateMinFiles = (req, res, next) => {
 const checkFilesBeforeForwarding = multer({
   storage: multer.memoryStorage(),
   fileFilter: (req, file, cb) => {
-    const allowedTypes = ["image/jpeg", "image/png"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/heic",
+      "image/heif", // Formato HEIF
+      "image/webp", // Formato WebP
+      "image/gif",  // Formato GIF
+      "image/bmp",  // Formato BMP
+      "image/tiff"  // Formato TIFF
+    ];
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
       cb(
-        new Error("Tipo de archivo no permitido. Solo JPG, PNG son aceptados."),
+        new Error("Tipo de archivo no permitido. Solo se aceptan formatos de imagen comunes."),
         false,
       );
     }
   },
   limits: { fileSize: 50 * 1024 * 1024, files: 4 },
-}).array("fotos",4);
+}).array("fotos", 4);
 
 const uploadPreincidencia = multer({
   storage: storage,

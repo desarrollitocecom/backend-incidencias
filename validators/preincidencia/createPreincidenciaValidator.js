@@ -116,6 +116,12 @@ const validatePreincidencia = {
     .isString()
     .isLength({ min: 10, max: 5000 })
     .withMessage("Descripcion debe ser un texto mìnimo 1 caracteres"),
+  turno: body("turno")
+    .isString()
+    .withMessage("Turno debe ser un texto")
+    .isIn(["Mañana", "Tarde", "Noche", "No Definido", "Rotativo"])
+    .withMessage("Turno debe ser uno de los siguientes: Mañana, Tarde, Noche, No Definido, Rotativo"),
+  
 };
 
 const createPreincidenciaValidator = () => {
@@ -147,6 +153,7 @@ const createPreincidenciaValidator = () => {
     validatePreincidencia.situacion_id,
     validatePreincidencia.operador_id,
     validatePreincidencia.descripcion,
+    validatePreincidencia.turno,
   ];
 };
 

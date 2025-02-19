@@ -112,8 +112,8 @@ const validateIncidencia = {
     .isString()
     .withMessage("Descripcion debe ser un texto"),
   fotos: body("fotos")
-    .isArray({ min: 1, max: 2 })
-    .withMessage("Fotos debe contener entre 1 y 2 elementos"),
+    .isArray({ min: 1, max: 4 })
+    .withMessage("Fotos debe contener entre 1 y 4 elementos"),
 };
 
 const createIncidenciaValidator = () => {

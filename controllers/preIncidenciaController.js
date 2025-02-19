@@ -84,20 +84,17 @@ const getPreIncidenciaById = async (id) => {
   }
 };
 
-const getPreIncidenciasBySereno = async (
-  id,
-  { fecha_inicio, fecha_fin, estado },
-) => {
+const getPreIncidenciasBySereno = async (id, { fecha_inicio, fecha_fin, estado }) => {
   try {
     const whereClause = {
       sereno_id: id,
       ...(fecha_inicio || fecha_fin
         ? {
-          fecha_ocurrencia: {
-            ...(fecha_inicio && { [Op.gte]: fecha_inicio }),
-            ...(fecha_fin && { [Op.lte]: fecha_fin }),
-          },
-        }
+            fecha_ocurrencia: {
+              ...(fecha_inicio && { [Op.gte]: fecha_inicio }),
+              ...(fecha_fin && { [Op.lte]: fecha_fin }),
+            },
+          }
         : {}),
       ...(estado ? { estado } : {}),
     };
@@ -120,7 +117,15 @@ const getPreIncidenciasBySereno = async (
     if (!preincidencias) {
       throw new Error("Incidencia no encontrada con el Id");
     }
-    return preincidencias;
+
+    // Contamos la cantidad de incidencias por cada estado
+    const countState = preincidencias.reduce((acc, inc) => {
+      const state = inc.estado;
+      acc[state] = (acc[state] || 0) + 1;
+      return acc;
+    }, {});
+
+    return { preincidencias, countState };
   } catch (error) {
     console.log("Error: ", error);
     const errorResponse = {
@@ -203,6 +208,82 @@ const getPhotoPreIncidencia = async (name) => {
   return filePath;
 };
 
+const getHistorial = async (turno, fecha) => {
+  try {
+    let targetDate = fecha ? fecha : new Date().toISOString().split('T')[0];
+    console.log(`Filtrando por fecha: ${targetDate}`);
+
+    const incidencias = await Incidencia.findAll({
+      where: {
+        fecha_ocurrencia: targetDate,
+        estado: 'APROBADO',
+        turno: turno
+      },
+      order: [['jurisdiccion_id', 'ASC']],
+      // Asegúrate de que el modelo Incidencia tenga el atributo "turno"
+      attributes: ['turno', 'jurisdiccion_id', 'sereno_id', 'nombre_reportante', 'codigo_incidencia']
+    });
+
+    /* 
+      La estructura final tendrá la siguiente jerarquía:
+      - Nivel 1: Agrupación por "turno"
+      - Nivel 2: Dentro de cada turno, agrupación por "jurisdiccion_id"
+      - Nivel 3: Dentro de cada jurisdicción, agrupación por "sereno_id" (con su "nombre_reportante" y un array de "codigo_incidencias")
+    */
+    const grouped = incidencias.reduce((acc, incidencia) => {
+      const { turno, jurisdiccion_id, sereno_id, nombre_reportante, codigo_incidencia } = incidencia;
+
+      // Nivel 1: Agrupar por turno
+      let turnoGroup = acc.find(group => group.turno === turno);
+      if (!turnoGroup) {
+        turnoGroup = {
+          turno,
+          jurisdicciones: []
+        };
+        acc.push(turnoGroup);
+      }
+
+      // Nivel 2: Dentro del turno, agrupar por jurisdiccion_id
+      let jurisdiccionGroup = turnoGroup.jurisdicciones.find(j => j.jurisdiccion_id === jurisdiccion_id);
+      if (!jurisdiccionGroup) {
+        jurisdiccionGroup = {
+          jurisdiccion_id,
+          users: []
+        };
+        turnoGroup.jurisdicciones.push(jurisdiccionGroup);
+      }
+
+      // Nivel 3: Dentro de la jurisdicción, agrupar por sereno_id
+      let serenoGroup = jurisdiccionGroup.users.find(u => u.sereno_id === sereno_id);
+      if (!serenoGroup) {
+        serenoGroup = {
+          sereno_id,
+          nombre_reportante,
+          codigo_incidencias: []
+        };
+        jurisdiccionGroup.users.push(serenoGroup);
+      }
+
+      // Agregar el código de incidencia
+      serenoGroup.codigo_incidencias.push(codigo_incidencia);
+
+      return acc;
+    }, []);
+
+    return grouped;
+  } catch (error) {
+    console.error(`Error al obtener el historial:`, error.message);
+    const errorResponse = {
+      statusCode: 400,
+      message: error.message || "Error al obtener el historial",
+      error: "Bad Request",
+    };
+    throw errorResponse;
+  }
+};
+
+
+
 module.exports = {
   getAllPreIncidencias,
   getPreIncidenciaById,
@@ -211,4 +292,5 @@ module.exports = {
   deletePreIncidencia,
   getPhotoPreIncidencia,
   getPreIncidenciasBySereno,
+  getHistorial
 };

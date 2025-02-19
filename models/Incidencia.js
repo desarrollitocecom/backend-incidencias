@@ -144,6 +144,10 @@ module.exports = (sequelize) => {
         allowNull: false,
         defaultValue: false,
       },
+      turno: {
+        type: DataTypes.ENUM("Mañana", "Tarde", "Noche", "No Definido", "Rotativo"),
+        allowNull: true,
+      },
     },
     {
       tableName: "Incidencias",

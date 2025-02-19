@@ -9,6 +9,7 @@ const {
   deletePreIncidenciaHandler,
   getPhotoPreIncidenciaHandler,
   getPreIncidenciasBySerenoHandler,
+  getAllHistorialHandler
 } = require("../handlers/preIncidenciaHandler");
 const {
   errorHandlerMulter,
@@ -20,8 +21,10 @@ const createPreIncidenciaValidator = require("../validators/preincidencia/create
 const updatePreIncidenciaValidator = require("../validators/preincidencia/updatePreincidenciaValidator");
 const getPreincidenciaByIdValidator = require("../validators/preincidencia/getPreincidenciaByIdValidator");
 const getFilteredDataValidator = require("../validators/preincidencia/getPreincidenciaFilters");
+const validateFechaYTurno = require("../validators/preincidencia/historialValidator");
 
 router.get("/", validate(getFilteredDataValidator()), getAllPreIncidenciasHandler);
+router.get("/historial", validate(validateFechaYTurno()), getAllHistorialHandler)
 router.get("/fotos/:name", getPhotoPreIncidenciaHandler);
 router.get("/:id", getPreIncidenciaByIdHandler);
 router.get(
