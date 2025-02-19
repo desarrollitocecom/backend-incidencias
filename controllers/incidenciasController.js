@@ -59,25 +59,24 @@ const postIncidencia = async (incidencia) => {
       }
     });
 
-    // const { data, status } = await axios.post(
-    //   `${INCIDENCIAS_URL}/api/crear_incidencia`,
-    //   formData,
-    //   {
-    //     headers: {
-    //       ...formData.getHeaders(),
-    //     },
-    //   },
-    // );
+    const { data, status } = await axios.post(
+      `${INCIDENCIAS_URL}/api/crear_incidencia`,
+      formData,
+      {
+        headers: {
+          ...formData.getHeaders(),
+        },
+      },
+    );
 
-    // if (data.success !== true) throw new Error("Error al crear la incidencia");
+    if (data.success !== true) throw new Error("Error al crear la incidencia");
 
-    // incidenciaData.estado = "APROBADO";
-    // incidenciaData.convertidaAIncidencia = true;
-    // incidenciaData.codigo_incidencia = data.codigo_incidencia;
+    incidenciaData.estado = "APROBADO";
+    incidenciaData.convertidaAIncidencia = true;
+    incidenciaData.codigo_incidencia = data.codigo_incidencia;
 
-    // const preincidencia = await updatePreIncidencia(id, incidenciaData);
-    // return data;
-    return 'ok';
+    const preincidencia = await updatePreIncidencia(id, incidenciaData);
+    return data;
   } catch (error) {
     console.log("Error: ", error);
     throw error;
