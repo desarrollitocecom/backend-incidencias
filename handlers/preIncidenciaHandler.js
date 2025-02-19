@@ -8,6 +8,7 @@ const {
   deletePreIncidencia,
   getPhotoPreIncidencia,
   getPreIncidenciasBySereno,
+  getHistorial
 } = require("../controllers/preIncidenciaController");
 
 const getAllPreIncidenciasHandler = async (req, res) => {
@@ -46,12 +47,12 @@ const getPreIncidenciasBySerenoHandler = async (req, res) => {
   fecha_inicio = fecha_inicio || oneMonthAgo.toISOString().split("T")[0];
 
   try {
-    const preincidencias = await getPreIncidenciasBySereno(id, {
+    const response = await getPreIncidenciasBySereno(id, {
       fecha_inicio,
       fecha_fin,
       estado,
     });
-    res.status(200).json({ success: true, data: preincidencias });
+    res.status(200).json({ success: true, data: response.preincidencias, countState: response.countState });
   } catch (error) {
     res.status(404).json(error);
   }
@@ -131,6 +132,18 @@ const getPhotoPreIncidenciaHandler = async (req, res) => {
   }
 };
 
+const getAllHistorialHandler = async (req, res) => {
+  const { turno = 'Mañana', fecha } = req.query;
+  try {
+    const resp = await getHistorial(turno, fecha);
+    res.status(200).json(resp);
+    
+  } catch (error) {
+    console.error("Error en getPhotoPreIncidenciaHandler:", error.message);
+    res.status(404).json({ error: "Foto no encontrada" });
+  }
+};
+
 module.exports = {
   getAllPreIncidenciasHandler,
   getPreIncidenciaByIdHandler,
@@ -139,4 +152,5 @@ module.exports = {
   deletePreIncidenciaHandler,
   getPhotoPreIncidenciaHandler,
   getPreIncidenciasBySerenoHandler,
+  getAllHistorialHandler
 };
