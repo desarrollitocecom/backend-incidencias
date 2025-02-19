@@ -43,7 +43,6 @@ const postIncidencia = async (incidencia) => {
   const FOTOS_RUTA = process.env.FOTOS_RUTA_PREINCIDENCIA;
 
   const { id, ...incidenciaData } = incidencia;
-  console.log(incidenciaData, 'incidencia Data');
   try {
     const formData = new FormData();
 
