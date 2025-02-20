@@ -72,6 +72,7 @@ const getPreIncidenciaById = async (id) => {
       estado: incidencia.estado,
       codigo_incidencia: incidencia.codigo_incidencia,
       direccion: incidencia.direccion,
+      fotos: incidencia.fotos,
     };
   } catch (error) {
     console.log("Error: ", error);
@@ -111,6 +112,7 @@ const getPreIncidenciasBySereno = async (id, { fecha_inicio, fecha_fin, estado }
         "direccion",
         "codigo_incidencia",
         "estado",
+        "fotos",
       ],
     });
 
